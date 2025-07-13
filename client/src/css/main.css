@@ -1,0 +1,89 @@
+@import "remixicon/fonts/remixicon.css";
+
+:root {
+    /* Variables par défaut si aucune classe light/dark sur html */
+    --background-border: #000;
+    --background-app: #212121;
+
+    --color-logo-primary: #2e637b;
+    --color-logo-secondary: #8bc8e4;
+
+    --color-logo2-primary: #9c4b90;
+    --color-logo2-secondary: #f7bff5;
+
+    --color-white-static: #ffffff;
+    --color-black-static: #000000;
+
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-border);
+}
+
+body {
+    margin: 0 auto;
+    background-color: var(--background-app);
+    color: var(--color-black);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+#app header {
+    width: 98%;
+    height: 5%;
+    padding: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #303030;
+}
+
+#app main {
+    height: 87%;
+}
+
+#app footer {
+    width: 98%;
+    height: 5%;
+    padding: 1%;
+    background-color: #303030;
+}
+
+/* Mode clair */
+html.lightMode {
+    --background-border: #fff;
+    --background-app: #f0f0f0;
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
+
+/* Mode sombre */
+html.darkMode {
+    --background-border: #000;
+    --background-app: #212121;
+    --color-black: #ffffff;
+    --color-white: #000000;
+}
