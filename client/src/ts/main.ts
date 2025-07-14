@@ -1,4 +1,5 @@
 import { createApp, reactive } from "vue";
+import { createPinia } from "pinia";
 import App from "../App.vue";
 import router from "../router";
 import "../css/main.css";
@@ -48,5 +49,5 @@ window.addEventListener("resize", () => {
 const app = createApp(App);
 
 app.provide("screen", screen);
-
+app.use(createPinia());
 app.use(router).mount("#app");

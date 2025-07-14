@@ -1,21 +1,22 @@
 <template>
     <div>
-        <label>Choisir le thème :</label>
-        <select v-model="selectedTheme">
-            <option value="light">Clair</option>
-            <option value="dark">Sombre</option>
-        </select>
+        <SelectInput
+            v-model="selectedTheme"
+            label="Choisir le thème :"
+            :options="themeOptions"
+            placeholder="-- Choisir --"
+        />
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import SelectInput from "@/components/formulaire/input/select.vue";
 
 const selectedTheme = ref("light");
-</script>
 
-<style scoped>
-select {
-    padding: 0.5rem;
-}
-</style>
+const themeOptions = [
+    { value: "light", label: "Clair" },
+    { value: "dark", label: "Sombre" },
+];
+</script>

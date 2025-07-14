@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
     client:
+        container_name: abyss-client
         image: node:20-alpine
         working_dir: /app
         volumes:
@@ -9,3 +10,42 @@ services:
         ports:
             - "5173:5173"
         command: sh -c "npm install && npm run dev -- --host"
+
+    server:
+        container_name: abyss-server
+        image: oven/bun:1-alpine
+        working_dir: /app
+        restart: always
+        volumes:
+            - ./server:/app
+        ports:
+            - "3000:3000"
+        command: bun run start
+        env_file:
+            - ./server/env/.env
+        depends_on:
+            - mysql
+
+    mysql:
+        container_name: abyss-mysql
+        image: mysql:8.0
+        env_file:
+            - ./server/env/.env
+        volumes:
+            - db_data_abyss:/var/lib/mysql
+            - ./server/env/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        ports:
+            - "3306:3306"
+
+    phpmyadmin:
+        container_name: abyss-phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        env_file:
+            - ./server/env/.env
+        ports:
+            - "8080:80"
+        depends_on:
+            - mysql
+
+volumes:
+    db_data_abyss:

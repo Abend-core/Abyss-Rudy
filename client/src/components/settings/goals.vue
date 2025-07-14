@@ -4,25 +4,39 @@
             <li v-for="(goal, idx) in goals" :key="idx">
                 Alerte si "{{ goal.category }}" dépasse {{ goal.limit }}
                 {{ currency }}
-                <button @click="removeGoal(idx)">Supprimer</button>
+                <PrimaryButton variant="red" @click="removeGoal(idx)">
+                    Supprimer
+                </PrimaryButton>
             </li>
         </ul>
 
-        <div class="form">
-            <input v-model="category" placeholder="Catégorie" />
-            <input
-                v-model.number="limit"
-                type="number"
-                placeholder="Limite de budget"
+        <form class="form" @submit.prevent="addGoal">
+            <TextInput
+                v-model="category"
+                placeholder="Catégorie"
+                label="Catégorie"
+                required
             />
-            <PrimaryButton @click="addGoal">Ajouter un objectif</PrimaryButton>
-        </div>
+
+            <NumberInput
+                v-model.number="limit"
+                placeholder="Limite de budget"
+                label="Limite (€)"
+                min="0"
+                step="0.10"
+                required
+            />
+
+            <PrimaryButton type="submit">Ajouter un objectif</PrimaryButton>
+        </form>
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import PrimaryButton from "@/components/formulaire/bouton/primary.vue";
+import TextInput from "@/components/formulaire/input/text.vue";
+import NumberInput from "@/components/formulaire/input/number.vue";
 
 const goals = ref([]);
 const currency = "€";
@@ -42,16 +56,25 @@ const removeGoal = (index) => {
     goals.value.splice(index, 1);
 };
 </script>
-
 <style scoped>
 .form {
     margin-top: 1rem;
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 400px;
 }
 
-input {
-    padding: 0.5rem;
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
 }
 </style>

@@ -3,79 +3,77 @@
         <h2>Nouvelle transaction</h2>
 
         <form @submit.prevent="submit">
-            <div class="form-group">
-                <label>Type de transaction</label>
-                <select v-model="form.type" required>
-                    <option disabled value="">-- Choisir --</option>
-                    <option value="credit">Crédit (Entrée)</option>
-                    <option value="debit">Débit (Dépense)</option>
-                </select>
-            </div>
+            <SelectInput
+                v-model="form.type"
+                :options="typeOptions"
+                label="Type de transaction"
+                placeholder="-- Choisir --"
+                required
+            />
 
-            <div class="form-group">
-                <label>Date</label>
-                <input type="date" v-model="form.date" required />
-            </div>
+            <DateInput
+                v-model="form.date"
+                label="Date"
+                :min="minDate"
+                required
+            />
 
-            <div class="form-group">
-                <label>Catégorie</label>
-                <select v-model="form.category" required>
-                    <option disabled value="">-- Choisir --</option>
-                    <option v-for="cat in categories" :key="cat" :value="cat">
-                        {{ cat }}
-                    </option>
-                </select>
-            </div>
+            <SelectInput
+                v-model="form.category"
+                :options="categoryOptions"
+                label="Catégorie"
+                placeholder="-- Choisir --"
+                required
+            />
 
-            <div class="form-group">
-                <label>Montant (€)</label>
-                <input
-                    type="number"
-                    v-model.number="form.amount"
-                    min="0"
-                    step="0.01"
-                    required
-                />
-            </div>
+            <NumberInput
+                v-model.number="form.amount"
+                label="Montant (€)"
+                min="0"
+                step="0.10"
+                placeholder="0.00"
+                required
+            />
 
-            <div class="form-group">
-                <label>Intitulé</label>
-                <input
-                    type="text"
-                    v-model="form.title"
-                    placeholder="Intitulé court"
-                    required
-                />
-            </div>
+            <TextInput
+                v-model="form.title"
+                label="Intitulé"
+                placeholder="Intitulé court"
+                required
+            />
 
-            <div class="form-group">
-                <label>Commentaire</label>
-                <textarea
-                    v-model="form.comment"
-                    placeholder="Commentaire facultatif"
-                ></textarea>
-            </div>
-
-            <div class="buttons">
-                <button
-                    type="button"
-                    class="secondary-btn"
-                    @click="$emit('cancel')"
-                >
-                    Annuler
-                </button>
-                <button type="submit" class="primary-btn">Enregistrer</button>
-            </div>
+            <TextareaInput
+                v-model="form.comment"
+                label="Commentaire"
+                placeholder="Commentaire facultatif"
+                rows="4"
+            />
+            <PrimaryButton type="submit"> Enregistrer </PrimaryButton>
+            <PrimaryButton variant="red" @click="$emit('cancel')" type="button">
+                Annuler
+            </PrimaryButton>
         </form>
     </div>
 </template>
 
 <script setup>
+import SelectInput from "@/components/formulaire/input/select.vue";
+import DateInput from "@/components/formulaire/input/date.vue";
+import NumberInput from "@/components/formulaire/input/number.vue";
+import TextInput from "@/components/formulaire/input/text.vue";
+import TextareaInput from "@/components/formulaire/input/textarea.vue";
+import PrimaryButton from "@/components/formulaire/bouton/primary.vue";
+
 import { reactive } from "vue";
 
 const emit = defineEmits(["submit", "cancel"]);
 
-const categories = [
+const typeOptions = [
+    { value: "credit", label: "Crédit (Entrée)" },
+    { value: "debit", label: "Débit (Dépense)" },
+];
+
+const categoryOptions = [
     "Salaire",
     "Courses",
     "Loyer",
@@ -84,9 +82,10 @@ const categories = [
     "Transports",
     "Santé",
     "Autre",
-];
+].map((c) => ({ value: c, label: c }));
 
 const today = new Date().toISOString().split("T")[0];
+const minDate = "2000-01-01"; // optionnel
 
 const form = reactive({
     type: "",
@@ -132,39 +131,6 @@ h2 {
     margin-bottom: 1.5rem;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    margin-bottom: 0.4rem;
-    font-weight: bold;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 0.5rem;
-    border: 1px solid var(--color-logo-primary);
-    border-radius: 0.4rem;
-    background-color: var(--color-white);
-    color: var(--color-black);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--color-logo-secondary);
-    box-shadow: 0 0 0 2px var(--color-logo-secondary);
-}
-
-textarea {
-    resize: vertical;
-}
-
 .buttons {
     display: flex;
     justify-content: space-between;
@@ -200,5 +166,10 @@ textarea {
 .secondary-btn:hover {
     background-color: var(--color-logo2-secondary);
     color: var(--color-black-static);
+}
+
+form button {
+    width: 100%;
+    margin-bottom: 2%;
 }
 </style>

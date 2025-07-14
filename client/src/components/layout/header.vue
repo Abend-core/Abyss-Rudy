@@ -16,8 +16,7 @@ import logo from "@/components/logo.vue";
 
 <style scoped>
 header {
-    color: var(--color-black);
-
+    color: var(--color-white-static);
     position: sticky;
     top: 0;
     z-index: 10;

@@ -7,10 +7,6 @@ const routes = [
         children: [
             { path: "", component: () => import("@/views/user/home.vue") },
             {
-                path: "dashboard",
-                component: () => import("@/views/user/dashboard.vue"),
-            },
-            {
                 path: "profile",
                 component: () => import("@/views/user/profile.vue"),
             },
@@ -21,6 +17,10 @@ const routes = [
             {
                 path: "stats",
                 component: () => import("@/views/user/stats.vue"),
+            },
+            {
+                path: "analytics",
+                component: () => import("@/views/user/analytics.vue"),
             },
         ],
     },

@@ -65,6 +65,7 @@ const selectedSection = ref("Général");
 <style scoped>
 .settings-page {
     margin: 0 auto;
+    overflow-y: auto;
 }
 
 .settings-menu {

@@ -1,23 +1,25 @@
 <template>
     <div>
-        <label>Devise par défaut :</label>
-        <select v-model="currency">
-            <option value="€">€ Euro</option>
-            <option value="$">$ Dollar</option>
-            <option value="£">£ Livre</option>
-            <option value="¥">¥ Yen</option>
-            <option value="₹">₹ Roupie</option>
-        </select>
+        <SelectInput
+            v-model="currency"
+            label="Devise par défaut :"
+            :options="currencyOptions"
+            placeholder="-- Choisir --"
+        />
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-const currency = ref("€");
-</script>
+import SelectInput from "@/components/formulaire/input/select.vue";
 
-<style scoped>
-select {
-    padding: 0.5rem;
-}
-</style>
+const currency = ref("€");
+
+const currencyOptions = [
+    { value: "€", label: "€ Euro" },
+    { value: "$", label: "$ Dollar" },
+    { value: "£", label: "£ Livre" },
+    { value: "¥", label: "¥ Yen" },
+    { value: "₹", label: "₹ Roupie" },
+];
+</script>

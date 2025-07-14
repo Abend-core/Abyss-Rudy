@@ -1,13 +1,15 @@
 <template>
     <div class="form-group">
-        <label v-if="label">{{ label }}</label>
+        <label v-if="label" :for="id">{{ label }}</label>
         <div class="input-wrapper">
             <input
+                :id="id"
                 :type="showPassword ? 'text' : 'password'"
                 :placeholder="placeholder"
                 :value="modelValue"
                 @input="$emit('update:modelValue', $event.target.value)"
                 class="form-input"
+                :disabled="disabled"
             />
             <button
                 type="button"
@@ -34,9 +36,9 @@ const props = defineProps({
     modelValue: String,
     placeholder: String,
     label: String,
+    id: String,
+    disabled: Boolean,
 });
-
-const emit = defineEmits(["update:modelValue"]);
 
 const showPassword = ref(false);
 const toggleShow = () => {
@@ -53,6 +55,7 @@ const toggleShow = () => {
 
 .form-group label {
     color: var(--color-black);
+    margin-bottom: 0.25rem;
 }
 
 .input-wrapper {
@@ -87,7 +90,7 @@ const toggleShow = () => {
     line-height: 1;
     display: flex;
     align-items: center;
-    color: var(--color-white-static, #000);
+    color: var(--color-black);
 }
 
 .toggle-button:hover {

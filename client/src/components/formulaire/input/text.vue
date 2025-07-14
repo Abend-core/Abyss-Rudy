@@ -1,23 +1,26 @@
 <template>
     <div class="form-group">
-        <label v-if="label">{{ label }}</label>
+        <label v-if="label" :for="id">{{ label }}</label>
         <input
+            :id="id"
             type="text"
             :placeholder="placeholder"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)"
             class="form-input"
+            :disabled="disabled"
         />
     </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
     modelValue: String,
     placeholder: String,
     label: String,
+    id: String,
+    disabled: Boolean,
 });
-defineEmits(["update:modelValue"]);
 </script>
 
 <style scoped>
@@ -29,6 +32,7 @@ defineEmits(["update:modelValue"]);
 
 .form-group label {
     color: var(--color-black);
+    margin-bottom: 0.25rem;
 }
 
 .form-input {
