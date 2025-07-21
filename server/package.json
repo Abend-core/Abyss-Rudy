@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "test": "vitest",
-        "start": "bun run src/app.ts"
+        "start": "bun src/app.ts"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",

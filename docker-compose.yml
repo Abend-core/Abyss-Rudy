@@ -36,7 +36,7 @@ services:
         image: mysql:8.0
         volumes:
             - db_data_abyss:/var/lib/mysql
-            - ./server/env/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         ports:
             - "3306:3306"
         environment:
