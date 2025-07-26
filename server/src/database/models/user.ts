@@ -1,5 +1,5 @@
 import { DataTypes, Model, type Optional, Sequelize } from "sequelize";
-import identifier from "../../class/identifier";
+import { Identifier } from "../../class/identifier";
 
 interface UserAttributes {
     id: string;
@@ -28,7 +28,7 @@ class User extends Model<UserAttributes, userCreationAttributes> {
                 id: {
                     type: DataTypes.UUID,
                     allowNull: false,
-                    defaultValue: identifier.uuidV7,
+                    defaultValue: Identifier.uuidV7,
                     primaryKey: true,
                 },
                 username: {

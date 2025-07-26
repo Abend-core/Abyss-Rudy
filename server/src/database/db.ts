@@ -1,6 +1,6 @@
 import { Sequelize, type Transaction } from "sequelize";
 import { initializeAllModels } from "./models";
-import { logger } from "../class/logger";
+import { Logger } from "../class/logger";
 
 class Database {
     public readonly sequelize: Sequelize;
@@ -22,7 +22,7 @@ class Database {
                     idle: 10000,
                 },
                 logging: (msg, timing) => {
-                    logger.loggerSequelize.info({
+                    Logger.sequelize.info({
                         message: msg,
                         executionTime: timing ? `${timing}ms` : "unknown",
                     });
@@ -37,11 +37,11 @@ class Database {
         try {
             await initializeAllModels(this.sequelize);
             await this.sequelize.authenticate();
-            logger.loggerApi.info(
+            Logger.api.info(
                 `✅ [MySQL] Connecté à ${process.env.MYSQL_DATABASE}`
             );
         } catch (error) {
-            logger.loggerApi.error("❌ [MySQL] Erreur de connexion:", error);
+            Logger.api.error("❌ [MySQL] Erreur de connexion:", error);
             throw error;
         }
     }
@@ -53,18 +53,18 @@ class Database {
 
             await this.sequelize.sync({ alter: true });
 
-            logger.loggerApi.info(
+            Logger.api.info(
                 `✅ [MySQL] Connecté à ${process.env.MYSQL_DATABASE}`
             );
         } catch (error) {
-            logger.loggerApi.error("❌ [MySQL] Erreur de connexion:", error);
+            Logger.api.error("❌ [MySQL] Erreur de connexion:", error);
             throw error;
         }
     }
 
     public async close() {
         await this.sequelize.close();
-        logger.loggerSequelize.info("🛑 [MySQL] Connexion fermée");
+        Logger.sequelize.info("🛑 [MySQL] Connexion fermée");
     }
 
     public async withTransaction<T>(
@@ -72,16 +72,16 @@ class Database {
     ): Promise<T> {
         const t = await this.sequelize.transaction();
 
-        logger.loggerApi.info("📦 [MySQL] Transaction démarrée");
+        Logger.api.info("📦 [MySQL] Transaction démarrée");
 
         try {
             const result = await callback(this.sequelize, t);
             await t.commit();
-            logger.loggerApi.info("✅ [MySQL] Transaction validée");
+            Logger.api.info("✅ [MySQL] Transaction validée");
             return result;
         } catch (error) {
             await t.rollback();
-            logger.loggerApi.error(
+            Logger.api.error(
                 "❌ [MySQL] Transaction annulée à cause d'une erreur:",
                 error
             );
