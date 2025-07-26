@@ -1,66 +1,81 @@
-import { createLogger, format, transports } from "winston";
+import {
+    createLogger,
+    format,
+    transports,
+    Logger as WinstonLogger,
+} from "winston";
 import path from "path";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-const fileFormat = format.combine(
-    format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    format.printf(({ level, message, timestamp }) => {
-        return `[${timestamp}] ${level.toUpperCase()} : ${message}`;
-    })
-);
+export class Logger {
+    private static fileFormat = format.combine(
+        format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+        format.printf(({ level, message, timestamp }) => {
+            return `[${timestamp}] ${level.toUpperCase()} : ${message}`;
+        })
+    );
 
-const consoleFormat = format.combine(
-    format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    format.printf(({ level, message, timestamp }) => {
-        return `[${timestamp}] ${level.toUpperCase()}: ${message}`;
-    }),
-    format.colorize({ all: true })
-);
+    private static consoleFormat = format.combine(
+        format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+        format.printf(({ level, message, timestamp }) => {
+            return `[${timestamp}] ${level.toUpperCase()} : ${message}`;
+        }),
+        format.colorize({ all: true })
+    );
 
-const createFileLogger = (filename: string) => {
-    return createLogger({
-        level: "info",
-        format: fileFormat,
-        transports: [
-            new DailyRotateFile({
-                filename: path.join(
-                    __dirname,
-                    `../../logs/${filename}/%DATE%.log`
-                ),
-                datePattern: "YYYY-MM-DD",
-                maxSize: "10m",
-                maxFiles: "7d",
-                zippedArchive: false,
-            }),
-        ],
-    });
-};
-
-const createConsoleLogger = () => {
-    return createLogger({
-        level: "debug",
-        format: consoleFormat,
-        transports: [new transports.Console()],
-    });
-};
-
-class Logger {
-    public loggerApi = createFileLogger("api");
-    public loggerAuth = createFileLogger("auth");
-    public loggerSequelize = createFileLogger("sequelize");
-
-    public loggerConsole = createConsoleLogger();
-
-    private static instance: Logger;
-
-    private constructor() {}
-
-    public static getInstance(): Logger {
-        if (!Logger.instance) {
-            Logger.instance = new Logger();
-        }
-        return Logger.instance;
+    /**
+     * Crée un logger pour fichier avec rotation des logs.
+     * @param filename - Nom du dossier/catégorie de log (exemple : "api", "auth").
+     * @returns Un logger Winston configuré.
+     */
+    private static createFileLogger(filename: string): WinstonLogger {
+        return createLogger({
+            level: "info",
+            format: Logger.fileFormat,
+            transports: [
+                new DailyRotateFile({
+                    filename: path.join(
+                        __dirname,
+                        `../../logs/${filename}/%DATE%.log`
+                    ),
+                    datePattern: "YYYY-MM-DD",
+                    maxSize: "10m",
+                    maxFiles: "7d",
+                    zippedArchive: false,
+                }),
+            ],
+        });
     }
-}
 
-export const logger = Logger.getInstance();
+    /**
+     * Crée un logger pour la console, avec couleur, idéal en développement.
+     * @returns Un logger Winston configuré pour la console.
+     */
+    private static createConsoleLogger(): WinstonLogger {
+        return createLogger({
+            level: "debug",
+            format: Logger.consoleFormat,
+            transports: [new transports.Console()],
+        });
+    }
+
+    /**
+     * Logger pour les messages liés à l'API.
+     */
+    static readonly api = Logger.createFileLogger("api");
+
+    /**
+     * Logger pour les messages liés à l'authentification.
+     */
+    static readonly auth = Logger.createFileLogger("auth");
+
+    /**
+     * Logger pour les messages liés à Sequelize/ORM.
+     */
+    static readonly sequelize = Logger.createFileLogger("sequelize");
+
+    /**
+     * Logger pour le debug général dans la console.
+     */
+    static readonly console = Logger.createConsoleLogger();
+}

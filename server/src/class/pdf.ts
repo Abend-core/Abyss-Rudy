@@ -2,17 +2,26 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import puppeteer from "puppeteer";
 import { directory } from "../class/directory";
 
-class Pdf {
-    async generateFromText(text: string): Promise<Buffer> {
+export class Pdf {
+    /**
+     * Génère un PDF simple à partir d'un texte.
+     * @param text - Texte à insérer dans le PDF.
+     * @returns {Promise<Buffer>} Buffer du PDF généré.
+     */
+    public static async generateFromText(text: string): Promise<Buffer> {
         const pdfDoc = await PDFDocument.create();
         const page = pdfDoc.addPage();
         page.drawText(text || "Document vide");
-
         const pdfBytes = await pdfDoc.save();
         return Buffer.from(pdfBytes);
     }
 
-    async generateFromHtml(html: string): Promise<Buffer> {
+    /**
+     * Génère un PDF à partir d'un contenu HTML via Puppeteer.
+     * @param html - Contenu HTML à convertir en PDF.
+     * @returns {Promise<Buffer>} Buffer du PDF généré.
+     */
+    public static async generateFromHtml(html: string): Promise<Buffer> {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 
@@ -23,24 +32,38 @@ class Pdf {
         return buffer as Buffer;
     }
 
-    async saveToFile(content: string, filePath: string): Promise<void> {
+    /**
+     * Génère un PDF à partir d'un texte et sauvegarde dans un fichier.
+     * @param content - Texte à insérer dans le PDF.
+     * @param filePath - Chemin complet du fichier de sortie.
+     */
+    public static async saveToFile(
+        content: string,
+        filePath: string
+    ): Promise<void> {
         const buffer = await this.generateFromText(content);
         await directory.writeBinaryFile(filePath, buffer);
     }
 
-    async generate(content: string): Promise<Buffer> {
+    /**
+     * Génère un PDF simple à partir d'un contenu texte (alias generateFromText).
+     * @param content - Texte à insérer dans le PDF.
+     * @returns {Promise<Buffer>} Buffer du PDF généré.
+     */
+    public static async generate(content: string): Promise<Buffer> {
         return this.generateFromText(content);
     }
-    async createInteractivePdf() {
+
+    /**
+     * Crée un PDF interactif avec formulaire, champs texte, dropdown, checkbox et zone de dessin.
+     * @returns {Promise<Buffer>} Buffer du PDF généré.
+     */
+    public static async createInteractivePdf(): Promise<Buffer> {
         const pdfDoc = await PDFDocument.create();
         const page = pdfDoc.addPage([600, 800]);
-
         const form = pdfDoc.getForm();
-
-        // Add fonts
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-        // Draw a title
         page.drawText("Formulaire interactif", {
             x: 50,
             y: 750,
@@ -49,28 +72,28 @@ class Pdf {
             color: rgb(0, 0, 0),
         });
 
-        // TEXT FIELD
+        // Champ texte
         const textField = form.createTextField("name");
         textField.setText("Votre nom ici");
         textField.addToPage(page, { x: 50, y: 700, width: 200, height: 20 });
 
-        // DATE FIELD (just a text field)
+        // Champ date (texte)
         const dateField = form.createTextField("date");
         dateField.setText("JJ/MM/AAAA");
         dateField.addToPage(page, { x: 50, y: 650, width: 200, height: 20 });
 
-        // DROPDOWN (choice field)
+        // Dropdown
         const dropdown = form.createDropdown("choices");
         dropdown.addOptions(["Option 1", "Option 2", "Option 3"]);
         dropdown.select("Option 1");
         dropdown.addToPage(page, { x: 50, y: 600, width: 200, height: 20 });
 
-        // CHECKBOX
+        // Checkbox
         const checkbox = form.createCheckBox("agree");
         checkbox.check();
         checkbox.addToPage(page, { x: 50, y: 550, width: 20, height: 20 });
 
-        // DRAW SKETCH AREA
+        // Zone dessin (rectangle)
         page.drawRectangle({
             x: 50,
             y: 400,
@@ -88,10 +111,7 @@ class Pdf {
             color: rgb(0, 0, 0),
         });
 
-        // Save the PDF
         const pdfBytes = await pdfDoc.save();
         return Buffer.from(pdfBytes);
     }
 }
-
-export const pdf = new Pdf();
