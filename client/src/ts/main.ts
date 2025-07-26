@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import App from "../App.vue";
 import router from "../router";
 import "../css/main.css";
+import { useAuthStore } from "@/stores/auth";
 
 const screen = reactive({
     width: window.innerWidth,
@@ -50,4 +51,7 @@ const app = createApp(App);
 
 app.provide("screen", screen);
 app.use(createPinia());
+
+const authStore = useAuthStore();
+authStore.fetchUser();
 app.use(router).mount("#app");
