@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Accès Interdit</title>
+        <style>
+            body {
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #fef6f6;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                color: #d33f49;
+                user-select: none;
+            }
+            .container {
+                text-align: center;
+                border: 2px solid #d33f49;
+                padding: 3rem 4rem;
+                border-radius: 16px;
+                box-shadow: 0 0 20px rgba(211, 63, 73, 0.3);
+                background: white;
+                max-width: 400px;
+                width: 100%;
+            }
+            .icon {
+                font-size: 5rem;
+                margin-bottom: 1rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+                letter-spacing: 2px;
+            }
+            p {
+                font-size: 1.1rem;
+                margin-bottom: 2rem;
+                color: #7a1e27;
+            }
+            button {
+                background: #d33f49;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                color: white;
+                font-weight: 600;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            button:hover {
+                background: #a72d37;
+            }
+        </style>
+    </head>
+    <body>
+        <div
+            class="container"
+            role="alert"
+            aria-labelledby="title"
+            aria-describedby="desc"
+        >
+            <div class="icon" aria-hidden="true">🚫</div>
+            <h1 id="title">403 - Accès Interdit</h1>
+            <p id="desc">
+                Désolé, vous n'avez pas la permission d'accéder à cette page.
+            </p>
+            <button onclick="history.back()">Retour</button>
+        </div>
+    </body>
+</html>

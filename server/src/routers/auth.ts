@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { authController } from "../controllers/auth";
 import { validate } from "../middlewares/validate";
-import { userSchema, registerSchema } from "../validators/user";
+import { userSchema, registerSchema, metricsSchema } from "../validators/user";
 import { authentification } from "../middlewares/auth";
 
 /**
@@ -59,7 +59,7 @@ router.post("/register", validate(registerSchema), authController.register);
  *       500:
  *         description: Erreur interne du serveur
  */
-router.get("/", authentification, authController.profil);
+router.get("/me", authentification, authController.profil);
 
 /**
  * @swagger
@@ -100,6 +100,38 @@ router.post("/signin", validate(userSchema), authController.signin);
  *         description: Erreur lors de la déconnexion
  */
 router.post("/logout", authentification, authController.logout);
+
+/**
+ * @swagger
+ * /auth/signinMetrics:
+ *   post:
+ *     summary: Se connecter pour accéder aux métriques
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom d'utilisateur pour l'accès aux métriques
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe pour l'accès aux métriques
+ *             required:
+ *               - username
+ *               - password
+ *     responses:
+ *       302:
+ *         description: Redirection vers /metrics en cas de succès
+ *       200:
+ *         description: Échec de l'authentification, renvoie la page de connexion avec un message d'erreur
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+router.post("/signinMetrics", validate(metricsSchema), authController.metric);
 
 /**
  * @swagger

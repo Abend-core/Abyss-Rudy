@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Statistiques</title>
+        <style>
+            body {
+                font-family: "Arial", sans-serif;
+                background-color: #f4f4f4;
+                margin: 20px;
+                color: #333;
+            }
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .card {
+                background-color: #fff;
+                border-left: 5px solid;
+                padding: 15px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s;
+            }
+            .card:hover {
+                transform: translateY(-2px);
+            }
+            .status-2xx {
+                border-left-color: #27ae60; /* Vert pour succès */
+            }
+            .status-4xx {
+                border-left-color: #e67e22; /* Orange pour erreurs client */
+            }
+            .status-5xx {
+                border-left-color: #e74c3c; /* Rouge pour erreurs serveur */
+            }
+            .card p {
+                margin: 5px 0;
+                font-size: 16px;
+            }
+            .card strong {
+                color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Metrics</h1>
+        {{#each stats}}
+        <div class="card status-{{ statusClass }}">
+            <p><strong>Endpoint :</strong> {{ endpoint }}</p>
+            <p><strong>Appels :</strong> {{ count }}</p>
+            <p><strong>Moyenne :</strong> {{ averageTime }}ms</p>
+            <p><strong>Erreurs :</strong> {{ errorRate }}</p>
+        </div>
+        {{/each}}
+    </body>
+</html>

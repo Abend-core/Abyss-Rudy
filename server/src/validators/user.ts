@@ -26,3 +26,8 @@ export const registerSchema = z.object({
         .string()
         .min(10, "Le mot de passe doit contenir au moins 10 caractères"),
 });
+
+export const metricsSchema = z.object({
+    username: z.string().min(1, "Le nom d'utilisateur est requis"),
+    password: z.string().min(1, "Le mot de passe est requis"),
+});

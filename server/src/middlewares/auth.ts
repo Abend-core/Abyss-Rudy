@@ -1,10 +1,11 @@
 import { type Context, type Next } from "hono";
 import { verify } from "jsonwebtoken";
+import { Cookie } from "../class/cookie";
 
 export const authentification = async (c: Context, next: Next) => {
     try {
-        const token = c.req.header("cookie")?.split("token=")[1]?.split(";")[0];
-
+        const cookies = c.req.header("cookie") || "";
+        const token = Cookie.getCookieAuth(cookies, "token");
         if (!token) {
             return c.json({ error: "Accès refusé. Token manquant." }, 401);
         }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Maintenance en cours</title>
+        <style>
+            body {
+                margin: 0;
+                height: 100vh;
+                background: #f0f4f8;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                color: #2c3e50;
+                user-select: none;
+            }
+            .container {
+                text-align: center;
+                background: white;
+                padding: 3rem 4rem;
+                border-radius: 16px;
+                box-shadow: 0 0 25px rgba(44, 62, 80, 0.1);
+                max-width: 400px;
+                width: 100%;
+            }
+            .icon {
+                font-size: 5rem;
+                margin-bottom: 1rem;
+                color: #3498db;
+                animation: pulse 2s infinite;
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+                letter-spacing: 1.5px;
+            }
+            p {
+                font-size: 1.1rem;
+                margin-bottom: 2rem;
+                color: #34495e;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.6;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div
+            class="container"
+            role="alert"
+            aria-labelledby="title"
+            aria-describedby="desc"
+        >
+            <div class="icon" aria-hidden="true">🛠️</div>
+            <h1 id="title">Maintenance en cours</h1>
+            <p id="desc">
+                Nous effectuons actuellement une maintenance. Merci de revenir
+                un peu plus tard.
+            </p>
+        </div>
+    </body>
+</html>
