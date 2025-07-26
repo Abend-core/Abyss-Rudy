@@ -29,7 +29,10 @@ services:
             - MYSQL_PORT=${MYSQL_PORT}
             - MYSQL_DIALECT=${MYSQL_DIALECT}
             - JWT_SECRET=${JWT_SECRET}
+            - AUTH_METRICS_LOGIN=${AUTH_METRICS_LOGIN}
+            - AUTH_METRICS_PASSWORD_HASH=${AUTH_METRICS_PASSWORD_HASH}
             - PORT=${PORT}
+            - COOKIE_SECURE=${COOKIE_SECURE}
 
     mysql:
         container_name: abyss-mysql
